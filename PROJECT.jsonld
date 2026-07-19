@@ -1,0 +1,37 @@
+{
+  "@context": "https://schema.org/",
+  "@type": "Project",
+  "name": "Ride-Hailing Platform (etzhayyim-project-kago)",
+  "status": "In Progress",
+  "identifier": "etzhayyim-project-kago",
+  "description": "Uber-like ride-hailing SpinApp integrated with maps.etzhayyim.com for spatial routing, driver matching, and real-time ride tracking.",
+  "hasPart": [
+    {
+      "@type": "WebApplication",
+      "name": "kago.etzhayyim.com Portal",
+      "url": "wasm/etzhayyim-wasm-kago-ride-y83jjx4l/"
+    }
+  ],
+  "tasks": [
+    {
+      "status": "in_progress",
+      "task": "Implement ride request, driver matching, and ride lifecycle management."
+    },
+    {
+      "status": "in_progress",
+      "task": "Integrate with maps.etzhayyim.com for routing and ETA."
+    },
+    {
+      "status": "pending",
+      "task": "Deploy kago.etzhayyim.com to Kubernetes with GitOps."
+    }
+  ],
+  "performers": [
+    {
+      "@type": "Service",
+      "name": "Kago Ride Service",
+      "identifier": "etzhayyim-wasm-kago-ride-y83jjx4l",
+      "description": "Ride-hailing backend: ride lifecycle, driver matching, fare estimation, real-time tracking via maps.etzhayyim.com."
+    }
+  ]
+}

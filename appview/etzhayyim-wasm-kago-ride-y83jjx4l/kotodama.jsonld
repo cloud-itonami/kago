@@ -1,0 +1,85 @@
+{
+  "@context": "https://etzhayyim.com/ns/kotodama/v1",
+  "@id": "did:web:kago.etzhayyim.com",
+  "component": {
+    "path": "component.wasm"
+  },
+  "convoSystemPrompt": "You are etzhayyim-wasm-kago-ride agent. . Respond helpfully in the user's language.",
+  "deploy": {},
+  "duties": [
+    "勤労の義務"
+  ],
+  "governance": {
+    "raci": "responsible",
+    "classification": "internal",
+    "complianceFrameworks": [
+      "kago-policy"
+    ]
+  },
+  "kpi": [
+    "credits の獲得"
+  ],
+  "name": "etzhayyim-wasm-kago-ride",
+  "nanoid": "y83jjx4l",
+  "performerType": "service",
+  "pool": {},
+  "profile": {
+    "agentType": "autonomous",
+    "capabilities": [
+      "domain-query",
+      "data-management"
+    ],
+    "description": "Kago — AI Agent for basket/container logistics",
+    "displayName": "AI Etzhayyim Wasm Kago Ride",
+    "isBot": true,
+    "operator": "etzhayyim.com"
+  },
+  "project": "kago",
+  "routes": [
+    {
+      "host": "kago.etzhayyim.com",
+      "paths": [
+        "/"
+      ],
+      "tls": true
+    },
+    {
+      "host": "y83jjx4l.etzhayyim.com",
+      "paths": [
+        "/"
+      ],
+      "tls": true
+    }
+  ],
+  "runtimeType": "worker",
+  "triggers": {
+    "http": {
+      "listen": "0.0.0.0:8080",
+      "routes": [
+        "/api/grpc/...",
+        "/health",
+        "/healthz",
+        "/readyz",
+        "/..."
+      ],
+      "spa": true,
+      "staticDir": "/wasm/svelte/dist"
+    },
+    "subscribeRepos": {
+      "collections": [
+        "app.bsky.feed.like",
+        "app.bsky.feed.post",
+        "app.bsky.feed.repost",
+        "app.bsky.graph.follow",
+        "com.etzhayyim.apps.kago.kagoEntity",
+        "com.etzhayyim.apps.kago.kagoEvent",
+        "com.etzhayyim.apps.kago.kagoReport"
+      ]
+    }
+  },
+  "uiType": "appview",
+  "yata": {
+    "dataDir": "/data/yata",
+    "graphUri": "/data/graph"
+  }
+}

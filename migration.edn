@@ -1,0 +1,1 @@
+{:schema "etzhayyim.migration/v1" :source {:repository "etzhayyim/root" :revision "089210a043264dc53659c1187a67ea4a8ffe292f" :path "60-apps/etzhayyim-project-kago" :tree "f2b90e0c96f52730cba63998bd5aaadcb7e68dc9" :tracked-files 23 :bytes 21569} :destination {:repository "etzhayyim/com-etzhayyim-app-kago"} :identity {:allowed-additions ["README.edn" "migration.edn"]}}
