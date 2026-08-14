@@ -2,6 +2,12 @@
 
 Uber-like ride-hailing platform (kago.etzhayyim.com). Integrated with maps.etzhayyim.com for spatial routing.
 
+> ⚠ **この文書は設計意図であって、現在の稼働状態ではない。** 以下に出てくる
+> ホスト（`kago.etzhayyim.com` / `y83jjx4l.etzhayyim.com` / `maps.etzhayyim.com`）は
+> **2026-08-14 時点でどれも DNS に存在せず**、実装本体（`component.wasm`）も
+> この repo に無い。実際に何ができて何ができないかは
+> [docs/operator-quickstart.md](docs/operator-quickstart.md) を読むこと。
+
 ## Components
 
 | Component | Folder | nanoid | 役割 |
@@ -48,6 +54,12 @@ requested → matched → driver_arriving → in_progress → completed
 ```
 
 ## Smoke Test
+
+> ⚠ **2026-08-14 実測: この 2 本はどちらも通らない。**
+> `y83jjx4l.etzhayyim.com` は NXDOMAIN（public resolver 2 つで一致）なので、
+> `curl` は HTTP 応答を得る前に `Could not resolve host` で終わる。
+> deploy 先が復活したときのための記録として残している。
+> 再現と現状は [docs/operator-quickstart.md](docs/operator-quickstart.md) §5。
 
 ```bash
 curl https://y83jjx4l.etzhayyim.com/health
