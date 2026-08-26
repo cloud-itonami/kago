@@ -5,7 +5,8 @@
 canonical な識別子は `com-etzhayyim-app-kago`、host は `kago.etzhayyim.com` を想定。
 
 > ⚠ **この repo は現在「動くアプリ」ではなく、抜き出しの途中結果である。**
-> build は通らず、e2e は実行できず、documented なホストは存在しない。
+> フロントエンド（下記）は build も test も通るが、backend（ride-hailing の
+> 実装本体）はこの repo に無く、documented なホストも存在しない。
 > 何がどこで止まるかは **[docs/operator-quickstart.md](docs/operator-quickstart.md)**
 > に実測値で書いてある。**触る前にそちらを読むこと。**
 
@@ -19,39 +20,71 @@ canonical な識別子は `com-etzhayyim-app-kago`、host は `kago.etzhayyim.co
 
 | | 実在 | 置き場 |
 |---|---|---|
-| Svelte appview（**scaffold のみ**、`src/` 全体で 33 行） | ✅ | `appview/etzhayyim-wasm-kago-ride-y83jjx4l/svelte/` |
-| e2e 仕様 4 feature（health / ride / driver / debug） | ✅ | `.../svelte/e2e/features/` |
+| ClojureScript appview（reagent + re-frame + jp-go-dds、**scaffold のみ**） | ✅ | `appview/etzhayyim-wasm-kago-ride-y83jjx4l/cljs/` |
 | service manifest（route / trigger / KV / governance） | ✅ | `.../kotodama.jsonld` |
 | 仕様の記述（ride lifecycle・MCP tool・API endpoint） | ✅ | `CLAUDE.md` |
 | **ride-hailing の実装本体 `component.wasm`** | ❌ | `etzhayyim/root` に残っている |
-| **`@etzhayyim/design-system` / `@etzhayyim/vite-plugin-safe-builder`** | ❌ | 同上（`packages/ts/`） |
+| **backend TypeScript / Cloudflare Worker logic** | ❌ | この repo には元々存在しない（appview だけが抜き出された） |
+| Svelte appview（旧・scaffold のみ、`src/` 全体で 33 行） | ❌（2026-08-26 に ClojureScript へ移行し削除） | — |
+| e2e 仕様 4 feature（health / ride / driver / debug、Playwright + playwright-bdd） | ❌（同上。Svelte/Vite/Playwright ツールチェーンごと撤去。**バックエンド API を対象にした仕様であって、フロントエンドのロジックではない** — 内容は git 履歴と `migration.edn` の provenance に残る） | — |
 
 `kotodama.jsonld` は `component.path: "component.wasm"` を宣言しているが、
 **そのファイルはこの repo に無い。**
 
-## 状態（2026-08-14 実測）
+## フロントエンド — Svelte から ClojureScript へ移行済み（2026-08-26）
+
+`appview/etzhayyim-wasm-kago-ride-y83jjx4l/cljs/` は
+ClojureScript（shadow-cljs）+ reagent 1.2.0 + re-frame 1.4.3 + `jp-go-dds.core`
+（デジタル庁デザインシステム）hiccup — このワークスペースの標準スタック
+（`kotoba-uiux` skill）。旧 `svelte/` の `App.svelte` は "Vite entry scaffold
+after SvelteKit cleanup" という一見出し・一段落だけの scaffold で、機能は
+何も持っていなかった。移行で作り替えたのはツールチェーンだけで、機能は
+一切足していない（発明しない）。
+
+```bash
+cd appview/etzhayyim-wasm-kago-ride-y83jjx4l/cljs
+npm install
+npx shadow-cljs compile app                          # -> public/js/, public/index.html と一緒に配信
+npx shadow-cljs compile test && node out/tests.js     # cljs.test — re-frame event/sub logic
+```
+
+実測（2026-08-26、この repo で）:
+
+| コマンド | 結果 |
+|---|---|
+| `npm install` | 通る（129 packages） |
+| `npx shadow-cljs compile app` | 通る（111 files, 110 compiled, 0 warnings） |
+| `npx shadow-cljs compile test && node out/tests.js` | 通る（4 tests, 6 assertions, 0 failures, 0 errors） |
+
+`public/index.html` の inline `<style>` は `jp-go-dds.page/->page` を JVM 上で
+1 度実行して生成した静的ファイル（`src/kago/app.cljs` の namespace docstring に
+再生成コマンドあり）。実行時に require するのは `jp-go-dds.core` だけで、
+`jp-go-dds.page` / `html.core` は shell を著者が書くための JVM 専用ツール。
+
+旧 Svelte scaffold は `workspace:*` 依存・vite/plugin の peer 不整合・
+design-system 未解決という 3 つの build blocker を持っていた（旧版の
+この README と `docs/operator-quickstart.md` §2–3 に実測が残っている —
+git 履歴参照）。ClojureScript 版はこれらの依存を持たないため、そもそも
+その 3 つの blocker が構造的に存在しない。
+
+## 状態（2026-08-26 実測）
 
 | 問い | 答え |
 |---|---|
-| `npm install` は通るか | **通らない**（`workspace:*` を解釈できない） |
-| `pnpm install` は通るか | **通らない**（参照先 package がこの repo に無い） |
-| build は通るか | **通らない**（tailwind config が design-system を要求する。ただし実測では**これが唯一の build blocker**で、plugin を解決すれば通る） |
-| e2e は通るか | **実行できない**（`kago.etzhayyim.com` が NXDOMAIN） |
-| `CLAUDE.md` の Smoke Test は通るか | **通らない**（`y83jjx4l.etzhayyim.com` が NXDOMAIN） |
-
-install と build の blocker は独立している。再現手順・実測した出力・
-「どれが本当に build を止めているか」は
-[docs/operator-quickstart.md](docs/operator-quickstart.md) §2–§3 と §7。
+| フロントエンドの `npm install` は通るか | **通る** |
+| フロントエンドの build は通るか | **通る** |
+| フロントエンドの test は通るか | **通る** |
+| backend（ride-hailing 実装本体）は動くか | **無い**（`component.wasm` が repo に無い。§ 上表） |
+| e2e は通るか | **仕様ごと撤去済み**（旧 Svelte/Playwright ツールチェーンの一部だった。backend が無いので実行対象も無かった） |
+| `CLAUDE.md` の Smoke Test は通るか | **通らない**（`y83jjx4l.etzhayyim.com` が NXDOMAIN — backend が無い以上変わらない） |
 
 ## 読む順番
 
 1. **[docs/operator-quickstart.md](docs/operator-quickstart.md)** — 実際に踏める手順と、止まる場所
 2. `CLAUDE.md` — ride lifecycle・MCP tool 一覧・KV bucket・maps 連携の**設計意図**
    （⚠ 末尾の Smoke Test は現在到達しない。稼働状態の記述として読まない）
-3. `appview/.../svelte/e2e/features/*.feature` — 期待される振る舞いの実行可能な記述
-   （現在は実行できないが、仕様としては最も具体的）
-4. `kotodama.jsonld` — route / trigger / KV / governance の宣言
-5. `migration.edn` — どこから何が抜き出されたか
+3. `kotodama.jsonld` — route / trigger / KV / governance の宣言
+4. `migration.edn` — どこから何が抜き出されたか
 
 ## この先の判断（owner 待ち）
 
