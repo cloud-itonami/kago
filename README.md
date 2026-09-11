@@ -44,8 +44,8 @@ after SvelteKit cleanup" という一見出し・一段落だけの scaffold で
 ```bash
 cd appview/etzhayyim-wasm-kago-ride-y83jjx4l/cljs
 npm install
-npx shadow-cljs compile app                          # -> public/js/, public/index.html と一緒に配信
-npx shadow-cljs compile test && node out/tests.js     # cljs.test — re-frame event/sub logic
+amu compile --target wasm32-browser app                          # -> public/js/, public/index.html と一緒に配信
+amu compile --target wasm32-browser test && node out/tests.js     # cljs.test — re-frame event/sub logic
 ```
 
 実測（2026-08-26、この repo で）:
@@ -53,8 +53,8 @@ npx shadow-cljs compile test && node out/tests.js     # cljs.test — re-frame e
 | コマンド | 結果 |
 |---|---|
 | `npm install` | 通る（129 packages） |
-| `npx shadow-cljs compile app` | 通る（111 files, 110 compiled, 0 warnings） |
-| `npx shadow-cljs compile test && node out/tests.js` | 通る（4 tests, 6 assertions, 0 failures, 0 errors） |
+| `amu compile --target wasm32-browser app` | 通る（111 files, 110 compiled, 0 warnings） |
+| `amu compile --target wasm32-browser test && node out/tests.js` | 通る（4 tests, 6 assertions, 0 failures, 0 errors） |
 
 `public/index.html` の inline `<style>` は `jp-go-dds.page/->page` を JVM 上で
 1 度実行して生成した静的ファイル（`src/kago/app.cljs` の namespace docstring に

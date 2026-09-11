@@ -63,7 +63,7 @@ added 129 packages, and audited 130 packages in 3s
 > （superproject の CLAUDE.md「repo-wide resource governor」）。
 
 ```bash
-node <superproject>/scripts/resource-guard.mjs run build -- npx shadow-cljs compile app
+node <superproject>/scripts/resource-guard.mjs run build -- amu compile --target wasm32-browser app
 ```
 
 実際の出力:
@@ -80,7 +80,7 @@ shadow-cljs - starting via "clojure"
 ### 2c. test — 通る
 
 ```bash
-node <superproject>/scripts/resource-guard.mjs run build -- npx shadow-cljs compile test
+node <superproject>/scripts/resource-guard.mjs run build -- amu compile --target wasm32-browser test
 node out/tests.js
 ```
 
