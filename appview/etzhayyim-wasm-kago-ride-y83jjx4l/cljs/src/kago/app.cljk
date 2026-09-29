@@ -6,7 +6,7 @@
   a heading + one paragraph, no interactivity, no routing) to reagent +
   re-frame, rendered with `jp-go-dds.core` (デジタル庁デザインシステム)
   hiccup. This is still a scaffold, not the ride-hailing UI described in the
-  sibling CLAUDE.md's MCP tool list — see the repo README for what is and is
+  sibling AGENTS.md's MCP tool list — see the repo README for what is and is
   not implemented here.
 
   `public/index.html`'s inlined <style> was produced once, at authoring time,

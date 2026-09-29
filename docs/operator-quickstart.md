@@ -19,7 +19,7 @@
 | 期待されるもの | この repo での実在 |
 |---|---|
 | `component.wasm`（`kotodama.jsonld` が `component.path` で指す本体） | **無い**（`find . -name '*.wasm'` が 0 件） |
-| 10 個の MCP tool（`request_ride` / `driver_accept_ride` …、CLAUDE.md に一覧がある） | **無い**（backend 側の実装） |
+| 10 個の MCP tool（`request_ride` / `driver_accept_ride` …、AGENTS.md に一覧がある） | **無い**（backend 側の実装） |
 | backend TypeScript / Cloudflare Worker（`src/app.ts` 等） | **無い**（この repo は元から appview のみを抜き出したもの） |
 | フロントエンド UI | **scaffold のみ**。2026-08-26 に Svelte から ClojureScript
   （reagent + re-frame + jp-go-dds）へ移行、build/test は通る（§2） |
@@ -60,7 +60,7 @@ added 129 packages, and audited 130 packages in 3s
 ### 2b. build — 通る
 
 > ⚠ このワークスペースの規則により、build は resource governor 経由で起動する
-> （superproject の CLAUDE.md「repo-wide resource governor」）。
+> （superproject の AGENTS.md「repo-wide resource governor」）。
 
 ```bash
 node <superproject>/scripts/resource-guard.mjs run build -- amu compile --target wasm32-browser app
@@ -122,16 +122,16 @@ ClojureScript 版はこれらの依存を一切持たない（reagent/re-frame �
 ## 3. backend — この repo には無い
 
 `kotodama.jsonld` が指す `component.wasm` はこの repo に存在しない
-（`find . -name '*.wasm'` は 0 件）。CLAUDE.md が列挙する 10 個の MCP tool、
+（`find . -name '*.wasm'` は 0 件）。AGENTS.md が列挙する 10 個の MCP tool、
 maps.etzhayyim.com との連携、ride lifecycle の実装はすべて `etzhayyim/root`
 側に残っている。**フロントエンドの移行はこのギャップを埋めない**
 （スコープ外 — 移行はフロントエンドのビルドツールチェーンだけを対象にした）。
 
 ---
 
-## 4. `CLAUDE.md` の "Smoke Test" は現在通らない（変化なし）
+## 4. `AGENTS.md` の "Smoke Test" は現在通らない（変化なし）
 
-repo の `CLAUDE.md` は以下を載せているが、**2026-08-14 時点でどちらも到達せず、
+repo の `AGENTS.md` は以下を載せているが、**2026-08-14 時点でどちらも到達せず、
 backend が無い以上 2026-08-26 時点でも変わらない**:
 
 ```bash
@@ -148,7 +148,7 @@ http=000
 （2026-08-14 実測。DNS 状態を再確認していないので、値そのものは当時のまま
 引用している——backend が無いという結論は変わらない。）
 
-同じく CLAUDE.md の "maps.etzhayyim.com Integration" 節が挙げる 3 つの API も、
+同じく AGENTS.md の "maps.etzhayyim.com Integration" 節が挙げる 3 つの API も、
 backend が無いので現在は呼べない。**あの節は設計意図の記録であって、
 現在の稼働状態の記述ではない。**
 
@@ -158,7 +158,7 @@ backend が無いので現在は呼べない。**あの節は設計意図の記�
 
 | やりたいこと | 今日できるか |
 |---|---|
-| 仕様（ride lifecycle / MCP tool 名 / KV bucket）を読む | **できる** — `CLAUDE.md` が正本 |
+| 仕様（ride lifecycle / MCP tool 名 / KV bucket）を読む | **できる** — `AGENTS.md` が正本 |
 | フロントエンドを build する | **できる**（§2b） |
 | フロントエンドの test を通す | **できる**（§2c） |
 | e2e を通す | **仕様ごと撤去済み**（旧 Svelte/Playwright ツールチェーンの一部。backend が無いため実行対象も無かった） |
@@ -172,5 +172,5 @@ backend が無いので現在は呼べない。**あの節は設計意図の記�
 ## 6. この文書の直し方
 
 数値・ホスト・エラー文はすべて実測値である。**古くなったら測り直して上書きする**
-（superproject CLAUDE.md / ADR-2607257000: 文書は最新状態のみを表し、履歴は git が持つ）。
+（superproject AGENTS.md / ADR-2607257000: 文書は最新状態のみを表し、履歴は git が持つ）。
 測っていないことをここに書かない。
