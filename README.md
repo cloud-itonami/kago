@@ -22,7 +22,7 @@ canonical な識別子は `com-etzhayyim-app-kago`、host は `kago.etzhayyim.co
 |---|---|---|
 | ClojureScript appview（reagent + re-frame + jp-go-dds、**scaffold のみ**） | ✅ | `appview/etzhayyim-wasm-kago-ride-y83jjx4l/cljs/` |
 | service manifest（route / trigger / KV / governance） | ✅ | `.../kotodama.jsonld` |
-| 仕様の記述（ride lifecycle・MCP tool・API endpoint） | ✅ | `CLAUDE.md` |
+| 仕様の記述（ride lifecycle・MCP tool・API endpoint） | ✅ | `AGENTS.md` |
 | **ride-hailing の実装本体 `component.wasm`** | ❌ | `etzhayyim/root` に残っている |
 | **backend TypeScript / Cloudflare Worker logic** | ❌ | この repo には元々存在しない（appview だけが抜き出された） |
 | Svelte appview（旧・scaffold のみ、`src/` 全体で 33 行） | ❌（2026-08-26 に ClojureScript へ移行し削除） | — |
@@ -76,12 +76,12 @@ git 履歴参照）。ClojureScript 版はこれらの依存を持たないた�
 | フロントエンドの test は通るか | **通る** |
 | backend（ride-hailing 実装本体）は動くか | **無い**（`component.wasm` が repo に無い。§ 上表） |
 | e2e は通るか | **仕様ごと撤去済み**（旧 Svelte/Playwright ツールチェーンの一部だった。backend が無いので実行対象も無かった） |
-| `CLAUDE.md` の Smoke Test は通るか | **通らない**（`y83jjx4l.etzhayyim.com` が NXDOMAIN — backend が無い以上変わらない） |
+| `AGENTS.md` の Smoke Test は通るか | **通らない**（`y83jjx4l.etzhayyim.com` が NXDOMAIN — backend が無い以上変わらない） |
 
 ## 読む順番
 
 1. **[docs/operator-quickstart.md](docs/operator-quickstart.md)** — 実際に踏める手順と、止まる場所
-2. `CLAUDE.md` — ride lifecycle・MCP tool 一覧・KV bucket・maps 連携の**設計意図**
+2. `AGENTS.md` — ride lifecycle・MCP tool 一覧・KV bucket・maps 連携の**設計意図**
    （⚠ 末尾の Smoke Test は現在到達しない。稼働状態の記述として読まない）
 3. `kotodama.jsonld` — route / trigger / KV / governance の宣言
 4. `migration.edn` — どこから何が抜き出されたか
